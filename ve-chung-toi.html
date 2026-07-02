@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Về chúng tôi — Làm Sao?</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f3ff; }
+
+    /* ── THEME (sync theo hero slide) ── */
+    :root {
+      --accent: #7c3aed; /* mặc định */
+      --accent-2: #38bdf8; /* mặc định */
+    }
+    .header {
+      
+      background: linear-gradient(200deg, #e0fdf4a2, #d1fae5b0, #ecfdf563);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 0.5px solid rgba(255,255,255,0.35);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.05);
+      padding: 0 32px; 
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+    }
+
+    .logo { font-size: 20px; font-weight: 700; color: rgba(17,24,39,0.95); }
+    .logo span { color: var(--accent); }
+    .logo span { color: var(--accent); }
+    .nav { display: flex; gap: 26px; align-items: center; }
+    .nav a { font-size: 13px; color: #6b7280; text-decoration: none; cursor: pointer; }
+    .nav a:hover { color: #8b5cf6; }
+    .nav a.active { color: #8b5cf6; font-weight: 500; }
+    .nav-cta {
+      background: linear-gradient(135deg, #8b5cf6, #38bdf8);
+      color: #fff !important; padding: 7px 18px; border-radius: 20px;
+      font-size: 12px !important; font-weight: 600;
+    }
+    /* HERO */
+    .page-hero {
+      background: linear-gradient(145deg, #e0fdf4, #d1fae5, #ecfdf5);
+      padding: 56px 32px 48px; position: relative; overflow: hidden;
+    }
+    .hero-orb {
+      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4;
+    }
+    .page-hero-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 1.4px; text-transform: uppercase;
+      background: #d1fae5; color: #065f46;
+      padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
+      position: relative; z-index: 1;
+    }
+    .page-hero h1 {
+      font-size: 40px; font-weight: 700; color: #064e3b;
+      line-height: 1.2; margin-bottom: 16px; letter-spacing: -1px;
+      position: relative; z-index: 1; max-width: 600px;
+    }
+    .page-hero h1 em { font-style: normal; color: #059669; }
+    .page-hero p {
+      font-size: 16px; color: #374151; line-height: 1.75; max-width: 560px;
+      position: relative; z-index: 1;
+    }
+
+    /* STATS ROW */
+    .stats-row {
+      background: #fff; padding: 28px 32px;
+      border-bottom: 0.5px solid rgba(0,0,0,0.07);
+      display: flex; gap: 0;
+    }
+    .stat-item {
+      flex: 1; padding: 0 24px; text-align: center;
+      border-right: 0.5px solid rgba(0,0,0,0.07);
+    }
+    .stat-item:first-child { padding-left: 0; }
+    .stat-item:last-child { border-right: none; }
+    .stat-number { font-size: 32px; font-weight: 700; color: #059669; letter-spacing: -1px; }
+    .stat-label { font-size: 12px; color: #6b7280; margin-top: 4px; line-height: 1.4; }
+
+    /* CONTENT */
+    .content-wrap { max-width: 860px; margin: 0 auto; padding: 48px 32px; }
+
+    .section { margin-bottom: 56px; }
+    .section-tag {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      letter-spacing: 1.4px; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 12px; margin-bottom: 12px;
+    }
+    .section h2 {
+      font-size: 26px; font-weight: 700; color: #1a1030;
+      margin-bottom: 16px; letter-spacing: -0.5px;
+    }
+    .section p {
+      font-size: 15px; color: #374151; line-height: 1.8; margin-bottom: 14px;
+    }
+
+    /* THEORY OF CHANGE */
+    .toc-flow {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 16px; padding: 28px; margin-top: 20px;
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .toc-step {
+      display: flex; align-items: flex-start; gap: 16px; padding: 14px 0;
+      border-bottom: 0.5px solid rgba(0,0,0,0.06);
+    }
+    .toc-step:last-child { border-bottom: none; padding-bottom: 0; }
+    .toc-icon {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .toc-text h4 { font-size: 14px; font-weight: 600; color: #1a1030; margin-bottom: 3px; }
+    .toc-text p { font-size: 13px; color: #6b7280; line-height: 1.5; margin: 0; }
+    .toc-arrow { text-align: center; color: #d1d5db; font-size: 16px; padding: 4px 0; }
+
+    /* PROBLEM CARDS */
+    .problem-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px;
+    }
+    .problem-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 18px;
+    }
+    .problem-emoji { font-size: 24px; margin-bottom: 10px; }
+    .problem-card h4 { font-size: 14px; font-weight: 600; color: #1a1030; margin-bottom: 6px; }
+    .problem-card p { font-size: 12px; color: #6b7280; line-height: 1.6; margin: 0; }
+
+    /* APPROACH */
+    .approach-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 20px;
+    }
+    .approach-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-left: 3px solid; border-radius: 12px; padding: 18px;
+    }
+    .approach-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+    .approach-card p { font-size: 12px; color: #6b7280; line-height: 1.6; margin: 0; }
+
+    /* CONTACT */
+    .contact-box {
+      background: linear-gradient(145deg, #f5f3ff, #ede9fe);
+      border-radius: 16px; padding: 32px; text-align: center;
+      border: 0.5px solid rgba(139,92,246,0.15);
+    }
+    .contact-box h3 { font-size: 22px; font-weight: 700; color: #3b0764; margin-bottom: 10px; }
+    .contact-box p { font-size: 14px; color: #6b7280; margin-bottom: 22px; line-height: 1.6; }
+    .contact-email {
+      font-size: 16px; font-weight: 600; color: #7c3aed;
+      text-decoration: none; display: inline-block; margin-bottom: 16px;
+    }
+    .contact-btn {
+      display: inline-block; background: linear-gradient(135deg, #8b5cf6, #38bdf8);
+      color: #fff; padding: 12px 28px; border-radius: 24px;
+      font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; border: none;
+    }
+
+    .footer-bar {
+      background: #fff; border-top: 0.5px solid rgba(0,0,0,0.07);
+      padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-text { font-size: 11px; color: #9ca3af; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 11px; color: #9ca3af; text-decoration: none; }
+    .footer-links a:hover { color: #7c3aed; }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">Làm <span>Sao?</span></div>
+  <nav class="nav">
+    <a href="lamsao.html">Trang chủ</a>
+    <a href="ve-chung-toi.html" class="active">Về chúng tôi</a>
+    <a href="kien-thuc.html">Kiến thức</a>
+    <a href="hoat-dong.html">Hoạt động</a>
+    <a href="tai-nguyen.html">Tài nguyên</a>
+    <a href="choi-thu.html" class="nav-cta">Chơi thử ↗</a>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="hero-orb" style="width:320px;height:320px;background:#6ee7b7;top:-100px;right:-60px;"></div>
+  <div class="hero-orb" style="width:200px;height:200px;background:#a7f3d0;bottom:-60px;left:200px;"></div>
+  <div class="page-hero-tag">🌿 Về dự án</div>
+  <h1>Dạy trẻ <em>sống sót</em><br>trước khi thiên tai<br>gõ cửa</h1>
+  <p>LÀM SAO? là nền tảng giáo dục số giúp trẻ em 9–15 tuổi vùng Đồng bằng sông Cửu Long học kỹ năng thích ứng khí hậu — không phải qua bài giảng, mà qua trải nghiệm mô phỏng thực tế.</p>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat-item">
+    <div class="stat-number">7</div>
+    <div class="stat-label">Chủ đề rủi ro<br>khí hậu địa phương</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">21</div>
+    <div class="stat-label">Bài học tương tác<br>có nguồn khoa học</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">88.000+</div>
+    <div class="stat-label">Trẻ em ĐBSCL bị ảnh hưởng<br>bởi hạn mặn (UNICEF, 2016)</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">500</div>
+    <div class="stat-label">Học sinh mục tiêu<br>trong giai đoạn thí điểm</div>
+  </div>
+</div>
+
+<div class="content-wrap">
+
+  <!-- VẤN ĐỀ -->
+  <div class="section">
+    <div class="section-tag" style="background:#fee2e2;color:#991b1b">❗ Vấn đề</div>
+    <h2>Trẻ em ĐBSCL đang đối mặt với điều gì?</h2>
+    <p>Đồng bằng sông Cửu Long là một trong những khu vực chịu tác động nặng nề nhất của biến đổi khí hậu tại Việt Nam. Hàng năm, hàng trăm nghìn học sinh phải đối mặt với ngập lụt, nắng nóng, giông lốc, hạn mặn và ô nhiễm môi trường — nhưng phần lớn chưa được trang bị kỹ năng phản ứng cụ thể và kịp thời.</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-emoji">🌊</div>
+        <h4>Thiếu kỹ năng thực hành</h4>
+        <p>Chương trình học hiện tại dạy "biến đổi khí hậu là gì" — nhưng không dạy phải làm gì khi nước ngập đến đầu gối và nhà còn điện.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-emoji">🏠</div>
+        <h4>Xa rời thực tế địa phương</h4>
+        <p>Tài liệu phòng chống thiên tai hiện có thường dùng bối cảnh chung chung, không gắn với nhà ở, lối sống và địa hình đặc thù ĐBSCL.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-emoji">👨‍👩‍👧</div>
+        <h4>Trẻ thường ở nhà một mình</h4>
+        <p>Di cư lao động phổ biến tại ĐBSCL khiến nhiều trẻ em sống với ông bà hoặc ở nhà một mình khi thiên tai xảy ra.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-emoji">📱</div>
+        <h4>Thiếu công cụ hấp dẫn</h4>
+        <p>Trẻ em học tốt nhất qua trải nghiệm và quyết định — không phải qua đọc hoặc nghe. Nhưng rất ít tài liệu được thiết kế theo cách này.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GIẢI PHÁP -->
+  <div class="section">
+    <div class="section-tag" style="background:#d1fae5;color:#065f46">💡 Giải pháp</div>
+    <h2>Cách tiếp cận của Làm Sao?</h2>
+    <div class="approach-grid">
+      <div class="approach-card" style="border-left-color:#059669;">
+        <h4 style="color:#059669">① Bối cảnh đúng địa phương</h4>
+        <p>Game mô phỏng căn nhà ĐBSCL thực tế: gian thờ, bếp củi, cầu ao, hàng ba. Học sinh nhận ra nhà của chính mình và dễ chuyển hóa kỹ năng vào thực tế.</p>
+      </div>
+      <div class="approach-card" style="border-left-color:#7c3aed;">
+        <h4 style="color:#7c3aed">② Học qua quyết định</h4>
+        <p>Cơ chế "Tình huống → Lựa chọn → Hậu quả → Giải thích". Trẻ phải suy nghĩ và quyết định trước khi nhận thông tin — ghi nhớ lâu hơn nhiều so với đọc.</p>
+      </div>
+      <div class="approach-card" style="border-left-color:#0891b2;">
+        <h4 style="color:#0891b2">③ Chạy trên điện thoại phổ thông</h4>
+        <p>Game phát triển trên Godot Engine, nhẹ và tương thích Android phổ thông. Không cần internet ổn định — quan trọng với học sinh nông thôn ĐBSCL.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THEORY OF CHANGE -->
+  <div class="section">
+    <div class="section-tag" style="background:#fef3c7;color:#92400e">🔄 Lý thuyết thay đổi</div>
+    <h2>Từ game đến hành vi thực tế</h2>
+    <div class="toc-flow">
+      <div class="toc-step">
+        <div class="toc-icon" style="background:#d1fae5">🎮</div>
+        <div class="toc-text">
+          <h4>Website + Game mobile</h4>
+          <p>Học sinh tiếp cận nội dung qua game mô phỏng tình huống thiên tai thực tế</p>
+        </div>
+      </div>
+      <div class="toc-arrow">↓</div>
+      <div class="toc-step">
+        <div class="toc-icon" style="background:#fef3c7">🧠</div>
+        <div class="toc-text">
+          <h4>Tăng kiến thức và kỹ năng quyết định</h4>
+          <p>Đo lường qua pre-test / post-test tại trường — mục tiêu tăng ít nhất 30%</p>
+        </div>
+      </div>
+      <div class="toc-arrow">↓</div>
+      <div class="toc-step">
+        <div class="toc-icon" style="background:#ede9fe">🏫</div>
+        <div class="toc-text">
+          <h4>Trải nghiệm thực hành tại trường (Climate Adventure Day)</h4>
+          <p>Mô phỏng tình huống nhóm, thảo luận, cam kết hành động cụ thể</p>
+        </div>
+      </div>
+      <div class="toc-arrow">↓</div>
+      <div class="toc-step">
+        <div class="toc-icon" style="background:#cffafe">🏠</div>
+        <div class="toc-text">
+          <h4>Thực hiện Climate Mission tại gia đình</h4>
+          <p>Nhiệm vụ thực hành tại nhà có thể kiểm chứng bằng ảnh — nộp qua website</p>
+        </div>
+      </div>
+      <div class="toc-arrow">↓</div>
+      <div class="toc-step">
+        <div class="toc-icon" style="background:#d1fae5">🌱</div>
+        <div class="toc-text">
+          <h4>Hình thành hành vi tích cực bền vững</h4>
+          <p>Khảo sát lại sau 4 tuần — mục tiêu ≥70% học sinh áp dụng ít nhất 1 hành vi mới</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIÊN HỆ -->
+  <div class="section">
+    <div class="contact-box">
+      <h3>Bạn muốn hợp tác?</h3>
+      <p>Chúng tôi đang tìm kiếm cơ hội hợp tác và phát triển dự án tại ĐBSCL<br>để thử nghiệm và đồng hành cùng dự án.</p>
+      <a class="contact-email" href="mailto:nhitng25100@gmail.com">nhitng25100@gmail.com</a><br>
+      <button class="contact-btn">Gửi lời hợp tác →</button>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer-bar">
+  <div class="footer-text">© 2026 Làm Sao? · Đồng bằng sông Cửu Long</div>
+  <div class="footer-links">
+    <a href="#">Liên hệ</a>
+    <a href="#">Về dự án</a>
+    <a href="choi-thu.html">Tải game</a>
+  </div>
+</footer>
+
+</body>
+</html>

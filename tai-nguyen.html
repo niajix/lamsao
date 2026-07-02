@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài nguyên — Làm Sao?</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f9f8ff; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f3ff; }
+
+    .header {
+      background: linear-gradient(145deg, #ecfeff, #cffafe, #f0fdfa);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 0.5px solid rgba(255,255,255,0.35);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.05);
+      padding: 0 32px; 
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+    }
+
+    .logo { font-size: 20px; font-weight: 700; color: rgba(17,24,39,0.95); }
+    .logo span { color: var(--accent); }
+    .logo span { color: var(--accent); }
+    .nav { display: flex; gap: 26px; align-items: center; }
+    .nav a { font-size: 13px; color: #6b7280; text-decoration: none; cursor: pointer; }
+    .nav a:hover { color: #8b5cf6; }
+    .nav a.active { color: #8b5cf6; font-weight: 500; }
+    .nav-cta {
+      background: linear-gradient(135deg, #8b5cf6, #38bdf8);
+      color: #fff !important; padding: 7px 18px; border-radius: 20px;
+      font-size: 12px !important; font-weight: 600;
+    }
+
+    .page-hero {
+      background: linear-gradient(145deg, #ecfeff, #cffafe, #f0fdfa);
+      padding: 48px 32px 40px;
+    }
+    .page-hero-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 1.4px; text-transform: uppercase;
+      background: #cffafe; color: #164e63;
+      padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
+    }
+    .page-hero h1 {
+      font-size: 34px; font-weight: 700; color: #083344;
+      line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.8px;
+    }
+    .page-hero p { font-size: 15px; color: #374151; line-height: 1.7; max-width: 560px; }
+
+    .content-wrap { padding: 36px 32px; max-width: 960px; }
+
+    /* TABS */
+    .section-tabs { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+    .section-tab {
+      padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 500;
+      cursor: pointer; border: 0.5px solid rgba(0,0,0,0.1); background: #fff;
+      color: #6b7280; transition: all 0.2s;
+    }
+    .section-tab.active { background: #7c3aed; color: #fff; border-color: #7c3aed; }
+
+    /* TEACHER SECTION */
+    .section-title {
+      font-size: 20px; font-weight: 700; color: #1a1030;
+      margin-bottom: 6px; letter-spacing: -0.3px;
+    }
+    .section-sub { font-size: 13px; color: #6b7280; margin-bottom: 20px; }
+
+    .resource-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px; margin-bottom: 40px;
+    }
+    .resource-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 18px;
+      display: flex; flex-direction: column; gap: 10px;
+      transition: box-shadow 0.2s;
+    }
+    .resource-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+    .resource-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .resource-type { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .resource-name { font-size: 14px; font-weight: 600; color: #1a1030; line-height: 1.4; }
+    .resource-desc { font-size: 12px; color: #6b7280; line-height: 1.5; flex: 1; }
+    .resource-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600;
+      padding: 7px 14px; border-radius: 16px; border: none; cursor: pointer;
+      align-self: flex-start; text-decoration: none;
+    }
+
+    /* SOURCES TABLE */
+    .sources-section { margin-bottom: 40px; }
+    .source-group { margin-bottom: 28px; }
+    .source-group-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; color: #6b7280; margin-bottom: 10px;
+      padding-bottom: 8px; border-bottom: 0.5px solid rgba(0,0,0,0.07);
+    }
+    .source-row {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 12px 0; border-bottom: 0.5px solid rgba(0,0,0,0.05);
+    }
+    .source-row:last-child { border-bottom: none; }
+    .source-num {
+      min-width: 28px; height: 28px; border-radius: 8px;
+      background: #f3f4f6; display: flex; align-items: center;
+      justify-content: center; font-size: 11px; font-weight: 700; color: #6b7280;
+      flex-shrink: 0;
+    }
+    .source-info { flex: 1; }
+    .source-title { font-size: 13px; font-weight: 600; color: #1a1030; margin-bottom: 3px; }
+    .source-org { font-size: 12px; color: #6b7280; margin-bottom: 4px; }
+    .source-topics { display: flex; gap: 6px; flex-wrap: wrap; }
+    .source-chip {
+      font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+    }
+    .source-link {
+      font-size: 11px; color: #7c3aed; text-decoration: none; flex-shrink: 0; margin-top: 4px;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    /* EMERGENCY NUMBERS */
+    .emergency-box {
+      background: linear-gradient(145deg, #fff1f2, #ffe4e6);
+      border: 0.5px solid rgba(225,29,72,0.2);
+      border-radius: 16px; padding: 24px; margin-bottom: 40px;
+    }
+    .emergency-box h3 { font-size: 16px; font-weight: 700; color: #4c0519; margin-bottom: 14px; }
+    .emergency-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .emergency-item {
+      background: #fff; border-radius: 10px; padding: 12px 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .emergency-num { font-size: 22px; font-weight: 700; color: #e11d48; }
+    .emergency-label { font-size: 12px; color: #374151; }
+
+    .footer-bar {
+      background: #fff; border-top: 0.5px solid rgba(0,0,0,0.07);
+      padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 16px;
+    }
+    .footer-text { font-size: 11px; color: #9ca3af; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 11px; color: #9ca3af; text-decoration: none; }
+    .footer-links a:hover { color: #7c3aed; }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">Làm <span>Sao?</span></div>
+  <nav class="nav">
+    <a href="lamsao.html">Trang chủ</a>
+    <a href="ve-chung-toi.html">Về chúng tôi</a>
+    <a href="kien-thuc.html">Kiến thức</a>
+    <a href="hoat-dong.html">Hoạt động</a>
+    <a href="tai-nguyen.html" class="active">Tài nguyên</a>
+    <a href="choi-thu.html" class="nav-cta">Chơi thử ↗</a>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-tag">📎 Tài nguyên</div>
+  <h1>Tài liệu dành cho<br>giáo viên & phụ huynh</h1>
+  <p>Hướng dẫn sử dụng game trong lớp học, bộ câu hỏi pre-test/post-test và danh sách nguồn tham khảo khoa học đầy đủ.</p>
+</div>
+
+<div class="content-wrap">
+
+  <!-- TEACHER RESOURCES -->
+  <div class="section-title">🏫 Tài liệu giáo viên</div>
+  <div class="section-sub">Dùng cho tiết học Kỹ năng sống, GDCD hoặc hoạt động ngoại khóa</div>
+
+  <div class="resource-grid">
+    <div class="resource-card">
+      <div class="resource-icon" style="background:#d1fae5">📋</div>
+      <div class="resource-type" style="color:#059669">PDF · Hướng dẫn</div>
+      <div class="resource-name">Kế hoạch bài dạy — Climate Adventure Day</div>
+      <div class="resource-desc">Hướng dẫn tổ chức buổi trải nghiệm 2,5 giờ tại trường: cấu trúc từng phần, vật liệu cần chuẩn bị, cách dẫn dắt thảo luận nhóm.</div>
+      <a class="resource-btn" style="background:#d1fae5;color:#059669" href="#">⬇ Tải xuống</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon" style="background:#fef3c7">📝</div>
+      <div class="resource-type" style="color:#d97706">FORM · Đánh giá</div>
+      <div class="resource-name">Bộ câu hỏi Pre-test / Post-test</div>
+      <div class="resource-desc">7 bộ × 10 câu hỏi (1 bộ/chủ đề). Dùng trước và sau buổi học để đo lường thay đổi kiến thức. Có đáp án và hướng dẫn chấm điểm.</div>
+      <a class="resource-btn" style="background:#fef3c7;color:#d97706" href="#">⬇ Tải xuống</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon" style="background:#ede9fe">🎯</div>
+      <div class="resource-type" style="color:#7c3aed">PDF · Hướng dẫn</div>
+      <div class="resource-name">Hướng dẫn tích hợp game vào lớp học</div>
+      <div class="resource-desc">Cách sử dụng game Làm Sao? trong tiết học có máy chiếu hoặc điện thoại cá nhân. Bao gồm các câu hỏi thảo luận gợi ý sau mỗi tình huống.</div>
+      <a class="resource-btn" style="background:#ede9fe;color:#7c3aed" href="#">⬇ Tải xuống</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon" style="background:#cffafe">📊</div>
+      <div class="resource-type" style="color:#0891b2">FORM · Khảo sát</div>
+      <div class="resource-name">Phiếu khảo sát hành vi sau 4 tuần</div>
+      <div class="resource-desc">Gửi cho học sinh và phụ huynh 4 tuần sau buổi trải nghiệm để đo lường thay đổi hành vi thực tế. Link Google Form có thể dùng ngay.</div>
+      <a class="resource-btn" style="background:#cffafe;color:#0891b2" href="#">⬇ Tải xuống</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon" style="background:#ffe4e6">🏆</div>
+      <div class="resource-type" style="color:#e11d48">PDF · In ấn</div>
+      <div class="resource-name">Bộ thẻ Climate Mission cho học sinh</div>
+      <div class="resource-desc">7 thẻ nhiệm vụ (1 thẻ/chủ đề) học sinh mang về nhà thực hiện. Thiết kế sẵn để in A5, có ô điền cam kết và chỗ dán ảnh bằng chứng.</div>
+      <a class="resource-btn" style="background:#ffe4e6;color:#e11d48" href="#">⬇ Tải xuống</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon" style="background:#f3e8ff">📚</div>
+      <div class="resource-type" style="color:#9333ea">PDF · Tham khảo</div>
+      <div class="resource-name">Danh sách nguồn khoa học đầy đủ</div>
+      <div class="resource-desc">23 nguồn tham khảo từ UNICEF, WHO, Red Cross và các cơ quan Việt Nam — kèm link truy cập và tóm tắt nội dung chính của từng tài liệu.</div>
+      <a class="resource-btn" style="background:#f3e8ff;color:#9333ea" href="#">⬇ Tải xuống</a>
+    </div>
+  </div>
+
+  <!-- EMERGENCY NUMBERS -->
+  <div class="emergency-box">
+    <h3>🆘 Số điện thoại khẩn cấp — dạy học sinh thuộc lòng</h3>
+    <div class="emergency-grid">
+      <div class="emergency-item">
+        <div class="emergency-num">113</div>
+        <div class="emergency-label">Công an<br><span style="color:#9ca3af;font-size:11px">Trộm cướp, nguy hiểm</span></div>
+      </div>
+      <div class="emergency-item">
+        <div class="emergency-num">114</div>
+        <div class="emergency-label">Cứu hỏa<br><span style="color:#9ca3af;font-size:11px">Cháy, tai nạn</span></div>
+      </div>
+      <div class="emergency-item">
+        <div class="emergency-num">115</div>
+        <div class="emergency-label">Cấp cứu y tế<br><span style="color:#9ca3af;font-size:11px">Say nắng, đuối nước, chấn thương</span></div>
+      </div>
+      <div class="emergency-item">
+        <div class="emergency-num">111</div>
+        <div class="emergency-label">Bảo vệ trẻ em<br><span style="color:#9ca3af;font-size:11px">Miễn phí 24/7 — bạo lực, lạm dụng, nguy hiểm online</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOURCES -->
+  <div class="sources-section">
+    <div class="section-title">📚 Nguồn tham khảo khoa học</div>
+    <div class="section-sub">Toàn bộ nội dung bài học được xây dựng dựa trên các tài liệu sau</div>
+
+    <div class="source-group">
+      <div class="source-group-title">🌊 Thiên tai — Ngập lụt, Nắng nóng, Giông lốc</div>
+
+      <div class="source-row">
+        <div class="source-num">1</div>
+        <div class="source-info">
+          <div class="source-title">Drowning Prevention Tips</div>
+          <div class="source-org">UNICEF Parenting · unicef.org/parenting</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#d1fae5;color:#065f46">Chủ đề 1</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.unicef.org/parenting" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">2</div>
+        <div class="source-info">
+          <div class="source-title">Stopping Child Drowning in Cambodia</div>
+          <div class="source-org">UNICEF Cambodia · unicef.org/cambodia</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#d1fae5;color:#065f46">Chủ đề 1</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.unicef.org/cambodia" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">3</div>
+        <div class="source-info">
+          <div class="source-title">Heat exhaustion: First aid</div>
+          <div class="source-org">Mayo Clinic · mayoclinic.org</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#fef3c7;color:#92400e">Chủ đề 2</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.mayoclinic.org" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">4</div>
+        <div class="source-info">
+          <div class="source-title">How to Handle Heat Illness</div>
+          <div class="source-org">Nemours KidsHealth · kidshealth.org</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#fef3c7;color:#92400e">Chủ đề 2</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://kidshealth.org" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">5</div>
+        <div class="source-info">
+          <div class="source-title">Thunderstorm Safety</div>
+          <div class="source-org">American Red Cross · redcross.org</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#ede9fe;color:#4c1d95">Chủ đề 3</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.redcross.org" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">6</div>
+        <div class="source-info">
+          <div class="source-title">Lightning Safety Tips and Resources</div>
+          <div class="source-org">NOAA / National Weather Service · weather.gov</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#ede9fe;color:#4c1d95">Chủ đề 3</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.weather.gov/safety/lightning" target="_blank">↗ Xem</a>
+      </div>
+    </div>
+
+    <div class="source-group">
+      <div class="source-group-title">💧 Môi trường & Nước — ĐBSCL</div>
+
+      <div class="source-row">
+        <div class="source-num">7</div>
+        <div class="source-info">
+          <div class="source-title">More than 88,000 children affected by the drought in the Mekong River Delta</div>
+          <div class="source-org">UNICEF Việt Nam · unicef.org/vietnam</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#cffafe;color:#164e63">Chủ đề 4</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.unicef.org/vietnam" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">8</div>
+        <div class="source-info">
+          <div class="source-title">Building resilience for children in schools and communities in the Mekong Delta</div>
+          <div class="source-org">UNICEF Việt Nam · unicef.org/vietnam/stories</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#d1fae5;color:#065f46">Chủ đề 1</span>
+            <span class="source-chip" style="background:#cffafe;color:#164e63">Chủ đề 4</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.unicef.org/vietnam/stories/building-resilience" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">9</div>
+        <div class="source-info">
+          <div class="source-title">Guidelines for drinking-water quality: fourth edition</div>
+          <div class="source-org">WHO · who.int</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#cffafe;color:#164e63">Chủ đề 4</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.who.int" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">10</div>
+        <div class="source-info">
+          <div class="source-title">Japan, UNICEF help children in Central, Mekong Delta regions cope with climate change</div>
+          <div class="source-org">ReliefWeb / UNICEF · reliefweb.int</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#cffafe;color:#164e63">Chủ đề 4</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://reliefweb.int" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">11</div>
+        <div class="source-info">
+          <div class="source-title">UNICEF's 2024 Impact in Viet Nam</div>
+          <div class="source-org">UNICEF Việt Nam · unicef.org/vietnam/reports</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#ffe4e6;color:#881337">Chủ đề 5</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.unicef.org/vietnam/reports/hope-action" target="_blank">↗ Xem</a>
+      </div>
+    </div>
+
+    <div class="source-group">
+      <div class="source-group-title">📱 Kỹ năng cá nhân — An toàn mạng & Tự chăm sóc</div>
+
+      <div class="source-row">
+        <div class="source-num">12</div>
+        <div class="source-info">
+          <div class="source-title">Children must be protected — both online and offline</div>
+          <div class="source-org">UNICEF Việt Nam · unicef.org/vietnam/press-releases</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#f3e8ff;color:#6d28d9">Chủ đề 6</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.unicef.org/vietnam" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">13</div>
+        <div class="source-info">
+          <div class="source-title">Protecting Vietnamese children online amid growing digital risks</div>
+          <div class="source-org">RMIT Vietnam · rmit.edu.vn</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#f3e8ff;color:#6d28d9">Chủ đề 6</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.rmit.edu.vn" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">14</div>
+        <div class="source-info">
+          <div class="source-title">Bộ quy tắc ứng xử bảo vệ trẻ em trên môi trường mạng</div>
+          <div class="source-org">Bộ Thông tin và Truyền thông · Quyết định 88/QĐ-BTTTT, 2025</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#f3e8ff;color:#6d28d9">Chủ đề 6</span>
+          </div>
+        </div>
+        <a class="source-link" href="#" target="_blank">↗ Xem</a>
+      </div>
+
+      <div class="source-row">
+        <div class="source-num">15</div>
+        <div class="source-info">
+          <div class="source-title">Disaster Risk Reduction</div>
+          <div class="source-org">UNICEF Việt Nam · unicef.org/vietnam/disaster-risk-reduction</div>
+          <div class="source-topics">
+            <span class="source-chip" style="background:#ccfbf1;color:#134e4a">Chủ đề 7</span>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.unicef.org/vietnam/disaster-risk-reduction" target="_blank">↗ Xem</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer-bar">
+  <div class="footer-text">© 2026 Làm Sao? · Đồng bằng sông Cửu Long</div>
+  <div class="footer-links">
+    <a href="ve-chung-toi.html">Liên hệ</a>
+    <a href="ve-chung-toi.html">Về dự án</a>
+    <a href="choi-thu.html">Tải game</a>
+  </div>
+</footer>
+
+</body>
+</html>

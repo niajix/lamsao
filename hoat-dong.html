@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoạt động — Làm Sao?</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f3ff; }
+
+    /* ── THEME (sync theo hero slide) ── */
+    :root {
+      --accent: #7c3aed; /* mặc định */
+      --accent-2: #38bdf8; /* mặc định */
+    }
+    .header {
+      
+
+
+      background: linear-gradient(180deg, #fff7ed, #fef3c7, #fffbeb);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 0.5px solid rgba(255,255,255,0.35);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.05);
+      padding: 0 32px; 
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+    }
+
+    .logo { font-size: 20px; font-weight: 700; color: rgba(17,24,39,0.95); }
+    .logo span { color: var(--accent); }
+    .logo span { color: var(--accent); }
+    .nav { display: flex; gap: 26px; align-items: center; }
+    .nav a { font-size: 13px; color: #6b7280; text-decoration: none; cursor: pointer; }
+    .nav a:hover { color: #8b5cf6; }
+    .nav a.active { color: #8b5cf6; font-weight: 500; }
+    .nav-cta {
+      background: linear-gradient(135deg, #8b5cf6, #38bdf8);
+      color: #fff !important; padding: 7px 18px; border-radius: 20px;
+      font-size: 12px !important; font-weight: 600;
+    }
+
+    .page-hero {
+      background: linear-gradient(145deg, #fff7ed, #fef3c7, #fffbeb);
+      padding: 48px 32px 40px;
+    }
+    .page-hero-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 1.4px; text-transform: uppercase;
+      background: #fef3c7; color: #92400e;
+      padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
+    }
+    .page-hero h1 {
+      font-size: 34px; font-weight: 700; color: #78350f;
+      line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.8px;
+    }
+    .page-hero p { font-size: 15px; color: #374151; line-height: 1.7; max-width: 560px; }
+
+    .content-wrap { padding: 40px 32px; }
+
+    /* ADVENTURE DAY */
+    .activity-hero {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 20px; overflow: hidden; margin-bottom: 32px;
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+    .activity-hero-left {
+      background: linear-gradient(145deg, #fef3c7, #fde68a);
+      padding: 36px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .activity-hero-left h2 {
+      font-size: 26px; font-weight: 700; color: #78350f;
+      margin-bottom: 10px; letter-spacing: -0.5px;
+    }
+    .activity-hero-left p { font-size: 14px; color: #92400e; line-height: 1.7; margin-bottom: 18px; }
+    .activity-hero-left .tag {
+      display: inline-block; background: rgba(255,255,255,0.5);
+      color: #78350f; font-size: 11px; font-weight: 700;
+      padding: 4px 12px; border-radius: 20px; margin-bottom: 8px;
+    }
+    .register-btn {
+      display: inline-block; background: #d97706; color: #fff;
+      padding: 11px 24px; border-radius: 22px; font-size: 13px;
+      font-weight: 600; border: none; cursor: pointer; text-decoration: none;
+    }
+    .activity-hero-right { padding: 32px; }
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .tl-item {
+      display: flex; gap: 14px; padding: 12px 0;
+      border-bottom: 0.5px solid rgba(0,0,0,0.05);
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-time {
+      min-width: 60px; font-size: 11px; font-weight: 700;
+      color: #d97706; padding-top: 2px;
+    }
+    .tl-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #fde68a; border: 2px solid #d97706;
+      margin-top: 5px; flex-shrink: 0;
+    }
+    .tl-content h4 { font-size: 13px; font-weight: 600; color: #1a1030; margin-bottom: 3px; }
+    .tl-content p { font-size: 12px; color: #6b7280; line-height: 1.4; }
+
+    /* MISSION SECTION */
+    .section-title { font-size: 20px; font-weight: 700; color: #1a1030; margin-bottom: 6px; }
+    .section-sub { font-size: 13px; color: #6b7280; margin-bottom: 20px; }
+
+    .mission-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px; margin-bottom: 40px;
+    }
+    .mission-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 14px; padding: 20px; position: relative; overflow: hidden;
+    }
+    .mission-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .mission-num {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .mission-emoji { font-size: 28px; margin-bottom: 10px; }
+    .mission-name { font-size: 14px; font-weight: 600; color: #1a1030; margin-bottom: 6px; }
+    .mission-desc { font-size: 12px; color: #6b7280; line-height: 1.55; margin-bottom: 12px; }
+    .mission-proof {
+      font-size: 11px; font-weight: 600; padding: 5px 10px;
+      border-radius: 10px; display: inline-block;
+    }
+
+    /* METRICS */
+    .metrics-box {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 16px; padding: 28px; margin-bottom: 32px;
+    }
+    .metrics-box h3 { font-size: 16px; font-weight: 700; color: #1a1030; margin-bottom: 18px; }
+    .metrics-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .metric-item { text-align: center; }
+    .metric-num { font-size: 28px; font-weight: 700; letter-spacing: -1px; }
+    .metric-label { font-size: 11px; color: #6b7280; margin-top: 4px; line-height: 1.4; }
+
+    /* CTA */
+    .cta-box {
+      background: linear-gradient(145deg, #f5f3ff, #ede9fe);
+      border-radius: 16px; padding: 32px; text-align: center;
+      border: 0.5px solid rgba(139,92,246,0.15);
+    }
+    .cta-box h3 { font-size: 20px; font-weight: 700; color: #3b0764; margin-bottom: 8px; }
+    .cta-box p { font-size: 14px; color: #6b7280; margin-bottom: 20px; line-height: 1.6; }
+    .cta-btn {
+      display: inline-block; background: linear-gradient(135deg, #8b5cf6, #38bdf8);
+      color: #fff; padding: 12px 28px; border-radius: 24px;
+      font-size: 14px; font-weight: 600; border: none; cursor: pointer;
+    }
+
+    .footer-bar {
+      background: #fff; border-top: 0.5px solid rgba(0,0,0,0.07);
+      padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 16px;
+    }
+    .footer-text { font-size: 11px; color: #9ca3af; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 11px; color: #9ca3af; text-decoration: none; }
+    .footer-links a:hover { color: #7c3aed; }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">Làm <span>Sao?</span></div>
+  <nav class="nav">
+    <a href="lamsao.html">Trang chủ</a>
+    <a href="ve-chung-toi.html">Về chúng tôi</a>
+    <a href="kien-thuc.html">Kiến thức</a>
+    <a href="hoat-dong.html" class="active">Hoạt động</a>
+    <a href="tai-nguyen.html">Tài nguyên</a>
+    <a href="choi-thu.html" class="nav-cta">Chơi thử ↗</a>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-tag">🎪 Hoạt động</div>
+  <h1>Không chỉ học online —<br>còn có hoạt động<br>tại trường và tại nhà</h1>
+  <p>Làm Sao? kết hợp học số và trải nghiệm thực tế theo mô hình Blended Learning: game trên điện thoại → buổi thực hành tại trường → nhiệm vụ tại gia đình.</p>
+</div>
+
+<div class="content-wrap">
+
+  <!-- CLIMATE ADVENTURE DAY -->
+  <div class="activity-hero">
+    <div class="activity-hero-left">
+      <div class="tag">⭐ Hoạt động chính</div>
+      <h2>Climate<br>Adventure Day</h2>
+      <p>Buổi trải nghiệm 2,5 giờ tại trường — học sinh chơi game, mô phỏng tình huống thực tế theo nhóm và cam kết 1 hành động cụ thể sẽ thực hiện tại nhà.</p>
+      <a class="register-btn" href="ve-chung-toi.html">Đăng ký cho trường của bạn →</a>
+    </div>
+    <div class="activity-hero-right">
+      <div style="font-size:13px;font-weight:700;color:#6b7280;margin-bottom:14px;letter-spacing:0.5px;text-transform:uppercase;">Lịch trình buổi học</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-time">15 phút</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <h4>Pre-test</h4>
+            <p>10 câu hỏi kiến thức trước khi bắt đầu</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">15 phút</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <h4>Khởi động</h4>
+            <p>Quiz nhanh tập thể hoặc trò chơi vận động</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">30 phút</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <h4>Chơi game</h4>
+            <p>Học sinh chơi Làm Sao? theo nhóm 2–3 em</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">45 phút</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <h4>Thử thách thực tế</h4>
+            <p>Mô phỏng tình huống thiên tai — thảo luận nhóm</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">15 phút</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <h4>Cam kết hành động</h4>
+            <p>Mỗi em viết 1 việc sẽ làm tại nhà trong tuần tới</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">15 phút</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <h4>Post-test</h4>
+            <p>Cùng 10 câu hỏi — đo thay đổi kiến thức ngay sau học</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIMATE MISSION -->
+  <div class="section-title">🏠 Climate Mission — Nhiệm vụ tại gia đình</div>
+  <div class="section-sub">Sau buổi trải nghiệm tại trường, học sinh nhận nhiệm vụ thực hành tại nhà trong 2–4 tuần và nộp bằng chứng qua website</div>
+
+  <div class="mission-grid">
+    <div class="mission-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#059669;"></div>
+      <div class="mission-num" style="color:#059669">Nhiệm vụ 1</div>
+      <div class="mission-emoji">💧</div>
+      <div class="mission-name">Bình nước cá nhân</div>
+      <div class="mission-desc">Chụp ảnh bình nước bạn mang đi học mỗi ngày trong 1 tuần. Chủ đề: Nắng nóng</div>
+      <span class="mission-proof" style="background:#d1fae5;color:#059669">📸 Nộp ảnh</span>
+    </div>
+    <div class="mission-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#d97706;"></div>
+      <div class="mission-num" style="color:#d97706">Nhiệm vụ 2</div>
+      <div class="mission-emoji">⚡</div>
+      <div class="mission-name">Sơ đồ cầu dao điện</div>
+      <div class="mission-desc">Vẽ sơ đồ vị trí cầu dao điện trong nhà và chia sẻ với cả nhà. Chủ đề: Ngập lụt</div>
+      <span class="mission-proof" style="background:#fef3c7;color:#d97706">📸 Nộp ảnh</span>
+    </div>
+    <div class="mission-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#7c3aed;"></div>
+      <div class="mission-num" style="color:#7c3aed">Nhiệm vụ 3</div>
+      <div class="mission-emoji">⛈️</div>
+      <div class="mission-name">Quy trình 3 bước khi có sét</div>
+      <div class="mission-desc">Viết và dán quy trình "3 bước khi nghe sấm sét" ở chỗ dễ thấy trong nhà. Chủ đề: Giông lốc</div>
+      <span class="mission-proof" style="background:#ede9fe;color:#7c3aed">📸 Nộp ảnh</span>
+    </div>
+    <div class="mission-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#0891b2;"></div>
+      <div class="mission-num" style="color:#0891b2">Nhiệm vụ 4</div>
+      <div class="mission-emoji">🪣</div>
+      <div class="mission-name">Góc trữ nước sạch</div>
+      <div class="mission-desc">Chụp ảnh góc trữ nước mưa hoặc nước sạch đúng cách nhà bạn đã thiết lập. Chủ đề: Xâm nhập mặn</div>
+      <span class="mission-proof" style="background:#cffafe;color:#0891b2">📸 Nộp ảnh</span>
+    </div>
+    <div class="mission-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#e11d48;"></div>
+      <div class="mission-num" style="color:#e11d48">Nhiệm vụ 5</div>
+      <div class="mission-emoji">♻️</div>
+      <div class="mission-name">Góc phân loại rác</div>
+      <div class="mission-desc">Tạo góc phân loại rác tại nhà và chụp ảnh. Ít nhất 2 thùng: hữu cơ và tái chế. Chủ đề: Ô nhiễm</div>
+      <span class="mission-proof" style="background:#ffe4e6;color:#e11d48">📸 Nộp ảnh</span>
+    </div>
+    <div class="mission-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9333ea;"></div>
+      <div class="mission-num" style="color:#9333ea">Nhiệm vụ 6</div>
+      <div class="mission-emoji">📵</div>
+      <div class="mission-name">Kiểm tra cài đặt riêng tư</div>
+      <div class="mission-desc">Chụp màn hình cài đặt riêng tư trên mạng xã hội bạn dùng sau khi đã chỉnh về chế độ an toàn. Chủ đề: An toàn mạng</div>
+      <span class="mission-proof" style="background:#f3e8ff;color:#9333ea">📱 Nộp ảnh màn hình</span>
+    </div>
+    <div class="mission-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#0d9488;"></div>
+      <div class="mission-num" style="color:#0d9488">Nhiệm vụ 7</div>
+      <div class="mission-emoji">📞</div>
+      <div class="mission-name">Tủ số khẩn cấp</div>
+      <div class="mission-desc">Viết và dán các số 113, 114, 115, 111 ở chỗ dễ thấy. Chụp ảnh và cho biết bạn dán ở đâu. Chủ đề: Tự chăm sóc</div>
+      <span class="mission-proof" style="background:#ccfbf1;color:#0d9488">📸 Nộp ảnh</span>
+    </div>
+  </div>
+
+  <!-- METRICS -->
+  <div class="metrics-box">
+    <h3>📊 Chỉ số mục tiêu trong giai đoạn thí điểm</h3>
+    <div class="metrics-grid">
+      <div class="metric-item">
+        <div class="metric-num" style="color:#059669">≥ 80%</div>
+        <div class="metric-label">Học sinh trả lời đúng<br>≥ 7/10 câu trong post-test</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num" style="color:#7c3aed">≥ 70%</div>
+        <div class="metric-label">Học sinh áp dụng ít nhất<br>1 hành vi mới sau 4 tuần</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num" style="color:#0891b2">500</div>
+        <div class="metric-label">Học sinh tham gia<br>trong năm đầu tiên</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h3>Trường bạn muốn tham gia?</h3>
+    <p>Chúng tôi đang triển khai thí điểm tại 3–5 trường THCS vùng ĐBSCL.<br>Đăng ký để được ưu tiên trong đợt đầu tiên.</p>
+    <button class="cta-btn">Đăng ký ngay →</button>
+  </div>
+
+</div>
+
+<footer class="footer-bar">
+  <div class="footer-text">© 2026 Làm Sao? · Đồng bằng sông Cửu Long</div>
+  <div class="footer-links">
+    <a href="ve-chung-toi.html">Liên hệ</a>
+    <a href="ve-chung-toi.html">Về dự án</a>
+    <a href="choi-thu.html">Tải game</a>
+  </div>
+</footer>
+
+</body>
+</html>

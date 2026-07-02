@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiến thức — Làm Sao?</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f3ff; }
+
+    /* ── THEME (sync theo hero slide) ── */
+    :root {
+      --accent: #7c3aed; /* mặc định */
+      --accent-2: #38bdf8; /* mặc định */
+    }
+    /* HEADER */
+    .header {
+      background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 0.5px solid rgba(255,255,255,0.35);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.05);
+      padding: 0 32px; 
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+    }
+
+    .logo { font-size: 20px; font-weight: 700; color: rgba(17,24,39,0.95); }
+    .logo span { color: var(--accent); }
+    .logo span { color: var(--accent); }
+    .nav { display: flex; gap: 26px; align-items: center; }
+    .nav a { font-size: 13px; color: #6b7280; text-decoration: none; cursor: pointer; }
+    .nav a:hover { color: #8b5cf6; }
+    .nav a.active { color: #8b5cf6; font-weight: 500; }
+    .nav-cta {
+      background: linear-gradient(135deg, #8b5cf6, #38bdf8);
+      color: #fff !important; padding: 7px 18px; border-radius: 20px;
+      font-size: 12px !important; font-weight: 600;
+    }
+    
+    /* PAGE HERO */
+    .page-hero {
+      background: linear-gradient(145deg, #f5f3ff, #ede9fe);
+      padding: 48px 32px 40px;
+      border-bottom: 0.5px solid rgba(139,92,246,0.1);
+    }
+    .page-hero-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 1.4px; text-transform: uppercase;
+      background: #ede9fe; color: #6d28d9;
+      padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
+    }
+    .page-hero h1 {
+      font-size: 36px; font-weight: 700; color: #1a1030;
+      line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.8px;
+    }
+    .page-hero p {
+      font-size: 15px; color: #6b7280; line-height: 1.7; max-width: 580px;
+    }
+
+    /* FILTER TABS */
+    .filter-bar {
+      background: #fff; padding: 0 32px;
+      border-bottom: 0.5px solid rgba(0,0,0,0.07);
+      display: flex; gap: 0; overflow-x: auto;
+    }
+    .filter-tab {
+      padding: 14px 20px; font-size: 12px; color: #9ca3af;
+      cursor: pointer; border-bottom: 2px solid transparent;
+      white-space: nowrap; transition: all 0.2s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .filter-tab:hover { color: #374151; }
+    .filter-tab.active { color: #7c3aed; border-bottom-color: #7c3aed; font-weight: 600; }
+    .tab-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    .filter-tab {
+      
+      z-index: 180;
+      padding: 13px 18px; font-size: 12px; color: #9ca3af;
+      cursor: pointer; border-bottom: 2px solid transparent;
+      white-space: nowrap; transition: all 0.2s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .filter-tab:hover { color: #374151; }
+    .filter-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .tab-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Đặt màu active theo biến theme (sync theo hero slide) */
+    .filter-tab.active .tab-dot { box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 20%, transparent); }
+
+
+
+    /* GRID */
+    .topics-grid {
+      padding: 32px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    
+    /* TOPIC CARD */
+    .topic-card {
+      background: #fff;
+      border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .topic-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+    .card-banner {
+      height: 140px; position: relative;
+      display: flex; align-items: flex-end; padding: 18px;
+      overflow: hidden;
+    }
+    .card-orb {
+      position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.6;
+    }
+    .card-number {
+      position: absolute; top: 16px; right: 16px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      opacity: 0.6; color: inherit;
+    }
+    .card-title-wrap { position: relative; z-index: 1; }
+    .card-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; margin-bottom: 6px; opacity: 0.8;
+    }
+    .card-name {
+      font-size: 18px; font-weight: 700; line-height: 1.3;
+    }
+
+    .card-body { padding: 18px; }
+    .card-desc {
+      font-size: 13px; color: #6b7280; line-height: 1.65; margin-bottom: 16px;
+    }
+
+    /* 3 outcomes row */
+    .card-outcomes { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .outcome-row {
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .outcome-icon {
+      width: 24px; height: 24px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; flex-shrink: 0; margin-top: 1px;
+    }
+    .outcome-text { font-size: 12px; color: #374151; line-height: 1.5; }
+    .outcome-label { font-weight: 600; font-size: 10px; letter-spacing: 0.5px; }
+
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 14px; border-top: 0.5px solid rgba(0,0,0,0.06);
+    }
+    .card-lessons { font-size: 11px; color: #9ca3af; }
+    .card-btn {
+      font-size: 12px; font-weight: 600;
+      padding: 7px 16px; border-radius: 20px; border: none;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .card-btn:hover { opacity: 0.85; }
+
+    /* SOURCE NOTE */
+    .source-note {
+      margin: 0 32px 16px;
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.07);
+      border-radius: 10px; padding: 14px 18px;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .source-note-icon { font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+    .source-note-text { font-size: 12px; color: #6b7280; line-height: 1.6; }
+    .source-note-text a { color: #7c3aed; text-decoration: none; }
+
+    /* FOOTER */
+    .footer-bar {
+      background: #fff; border-top: 0.5px solid rgba(0,0,0,0.07);
+      padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 16px;
+    }
+    .footer-text { font-size: 11px; color: #9ca3af; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 11px; color: #9ca3af; text-decoration: none; }
+    .footer-links a:hover { color: #7c3aed; }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">Làm <span>Sao?</span></div>
+  <nav class="nav">
+    <a href="lamsao.html">Trang chủ</a>
+    <a href="ve-chung-toi.html">Về chúng tôi</a>
+    <a href="kien-thuc.html" class="active">Kiến thức</a>
+    <a href="hoat-dong.html">Hoạt động</a>
+    <a href="tai-nguyen.html">Tài nguyên</a>
+    <a href="choi-thu.html" class="nav-cta">Chơi thử ↗</a>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-tag">📚 Thư viện kiến thức</div>
+  <h1>7 chủ đề, 21 bài học —<br>dành riêng cho học sinh ĐBSCL</h1>
+  <p>Mỗi bài học được xây dựng dựa trên rủi ro khí hậu thực tế tại Đồng bằng sông Cửu Long. Nội dung gắn với bối cảnh địa phương, có nguồn tham khảo khoa học rõ ràng.</p>
+</div>
+
+<!-- Filter tabs -->
+<div class="filter-bar">
+  <div class="filter-tab active">
+    <div class="tab-dot" style="background:#8b5cf6"></div>Tất cả
+  </div>
+  <div class="filter-tab">
+    <div class="tab-dot" style="background:#059669"></div>Thiên tai
+  </div>
+  <div class="filter-tab">
+    <div class="tab-dot" style="background:#0891b2"></div>Môi trường & Nước
+  </div>
+  <div class="filter-tab">
+    <div class="tab-dot" style="background:#7c3aed"></div>Kỹ năng cá nhân
+  </div>
+</div>
+
+<!-- Grid -->
+<div class="topics-grid">
+
+  <!-- CHỦ ĐỀ 1: NGẬP LỤT -->
+  <div class="topic-card">
+    <div class="card-banner" style="background: linear-gradient(145deg, #e0fdf4, #d1fae5);">
+      <div class="card-orb" style="width:180px;height:180px;background:#6ee7b7;top:-60px;right:-40px;"></div>
+      <div class="card-number" style="color:#065f46">CHỦ ĐỀ 1</div>
+      <div class="card-title-wrap">
+        <div class="card-tag" style="color:#059669">🌊 Thiên tai</div>
+        <div class="card-name" style="color:#064e3b">Ngập lụt &<br>Đuối nước</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Học cách ứng phó khi nước dâng: tắt điện đúng lúc, tìm đường thoát an toàn, và kỹ năng cứu người đuối nước không nhảy xuống nước.</div>
+      <div class="card-outcomes">
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#d1fae5">🧠</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#059669">KIẾN THỨC</span><br>Hiểu nguy cơ điện giật khi nước ngập; nhận biết dòng chảy nguy hiểm</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#d1fae5">💚</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#059669">THÁI ĐỘ</span><br>Cẩn trọng, không chủ quan khi nước vào nhà</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#d1fae5">✅</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#059669">HÀNH VI</span><br>Cúp điện trước khi nước vào; biết nguyên tắc "ném, đừng nhảy"</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-lessons">3 bài học · UNICEF, Red Cross</div>
+        <button class="card-btn" style="background:#059669;color:#fff">Học ngay →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHỦ ĐỀ 2: NẮNG NÓNG -->
+  <div class="topic-card">
+    <div class="card-banner" style="background: linear-gradient(145deg, #fff7ed, #fef3c7);">
+      <div class="card-orb" style="width:180px;height:180px;background:#fde68a;top:-60px;right:-40px;"></div>
+      <div class="card-number" style="color:#78350f">CHỦ ĐỀ 2</div>
+      <div class="card-title-wrap">
+        <div class="card-tag" style="color:#d97706">☀️ Thiên tai</div>
+        <div class="card-name" style="color:#78350f">Nắng nóng<br>cực đoan</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Phân biệt kiệt sức vì nhiệt và say nắng. Biết khi nào cần gọi 115 và cách sơ cứu đúng tại chỗ khi trời 38–40°C.</div>
+      <div class="card-outcomes">
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#fef3c7">🧠</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#d97706">KIẾN THỨC</span><br>Nhận biết dấu hiệu say nắng; hiểu cơ chế mất nước của cơ thể</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#fef3c7">💛</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#d97706">THÁI ĐỘ</span><br>Quan tâm sức khỏe bản thân và người xung quanh</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#fef3c7">✅</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#d97706">HÀNH VI</span><br>Uống đủ nước, tránh ra ngoài 11h–14h, biết sơ cứu say nắng</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-lessons">3 bài học · Mayo Clinic, KidsHealth</div>
+        <button class="card-btn" style="background:#d97706;color:#fff">Học ngay →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHỦ ĐỀ 3: GIÔNG LỐC -->
+  <div class="topic-card">
+    <div class="card-banner" style="background: linear-gradient(145deg, #f5f3ff, #ede9fe);">
+      <div class="card-orb" style="width:180px;height:180px;background:#c4b5fd;top:-60px;right:-40px;"></div>
+      <div class="card-number" style="color:#4c1d95">CHỦ ĐỀ 3</div>
+      <div class="card-title-wrap">
+        <div class="card-tag" style="color:#7c3aed">⚡ Thiên tai</div>
+        <div class="card-name" style="color:#3b0764">Giông lốc<br>& Sét đánh</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Cây lớn, mái tôn hay nhà bê tông — cái nào an toàn? Học quy tắc 30/30 và những sai lầm nguy hiểm khi trú mưa giông.</div>
+      <div class="card-outcomes">
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#ede9fe">🧠</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#7c3aed">KIẾN THỨC</span><br>Hiểu sét đánh vật cao nhất; phân biệt nơi trú an toàn và nguy hiểm</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#ede9fe">💜</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#7c3aed">THÁI ĐỘ</span><br>Không liều lĩnh, không chủ quan khi nghe thấy tiếng sấm</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#ede9fe">✅</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#7c3aed">HÀNH VI</span><br>Áp dụng quy tắc 30/30; vào nhà kiên cố, không trú gốc cây</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-lessons">3 bài học · Red Cross, UNICEF VN</div>
+        <button class="card-btn" style="background:#7c3aed;color:#fff">Học ngay →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHỦ ĐỀ 4: XÂM NHẬP MẶN -->
+  <div class="topic-card">
+    <div class="card-banner" style="background: linear-gradient(145deg, #ecfeff, #cffafe);">
+      <div class="card-orb" style="width:180px;height:180px;background:#a5f3fc;top:-60px;right:-40px;"></div>
+      <div class="card-number" style="color:#164e63">CHỦ ĐỀ 4</div>
+      <div class="card-title-wrap">
+        <div class="card-tag" style="color:#0891b2">💧 Môi trường & Nước</div>
+        <div class="card-name" style="color:#083344">Xâm nhập mặn<br>& Thiếu nước</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Hơn 88.000 trẻ em ĐBSCL bị ảnh hưởng bởi hạn mặn. Học cách nhận biết nước an toàn, trữ nước đúng cách và tiết kiệm nước mùa khô.</div>
+      <div class="card-outcomes">
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#cffafe">🧠</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#0891b2">KIẾN THỨC</span><br>Hiểu độ mặn an toàn; tác hại nước mặn với sức khỏe</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#cffafe">💙</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#0891b2">THÁI ĐỘ</span><br>Tiết kiệm nước ngọt; không lãng phí trong mùa khô</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#cffafe">✅</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#0891b2">HÀNH VI</span><br>Trữ nước mưa đúng cách; dùng bình lọc; rửa tay xà phòng</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-lessons">3 bài học · UNICEF VN, WHO</div>
+        <button class="card-btn" style="background:#0891b2;color:#fff">Học ngay →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHỦ ĐỀ 5: Ô NHIỄM -->
+  <div class="topic-card">
+    <div class="card-banner" style="background: linear-gradient(145deg, #fff1f2, #ffe4e6);">
+      <div class="card-orb" style="width:180px;height:180px;background:#fda4af;top:-60px;right:-40px;"></div>
+      <div class="card-number" style="color:#881337">CHỦ ĐỀ 5</div>
+      <div class="card-title-wrap">
+        <div class="card-tag" style="color:#e11d48">🏭 Môi trường & Nước</div>
+        <div class="card-name" style="color:#4c0519">Ô nhiễm<br>môi trường</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Khói đốt rác, kênh rạch ô nhiễm, thuốc trừ sâu tồn dư — nhận biết nguồn ô nhiễm quanh nhà và cách bảo vệ sức khỏe gia đình.</div>
+      <div class="card-outcomes">
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#ffe4e6">🧠</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#e11d48">KIẾN THỨC</span><br>Nhận biết nguồn gây ô nhiễm; hiểu tác hại khói nhựa và nước kênh bẩn</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#ffe4e6">❤️</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#e11d48">THÁI ĐỘ</span><br>Có trách nhiệm với môi trường xung quanh</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#ffe4e6">✅</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#e11d48">HÀNH VI</span><br>Phân loại rác; không đốt nhựa; không vứt rác xuống kênh</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-lessons">3 bài học · WHO, Bộ TN&MT</div>
+        <button class="card-btn" style="background:#e11d48;color:#fff">Học ngay →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHỦ ĐỀ 6: AN TOÀN MẠNG -->
+  <div class="topic-card">
+    <div class="card-banner" style="background: linear-gradient(145deg, #faf5ff, #ede9fe);">
+      <div class="card-orb" style="width:180px;height:180px;background:#d8b4fe;top:-60px;right:-40px;"></div>
+      <div class="card-number" style="color:#4c1d95">CHỦ ĐỀ 6</div>
+      <div class="card-title-wrap">
+        <div class="card-tag" style="color:#9333ea">📱 Kỹ năng cá nhân</div>
+        <div class="card-name" style="color:#3b0764">An toàn<br>trên Internet</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">87% trẻ em Việt Nam dùng internet hàng ngày. Học cách nhận biết lừa đảo, bắt nạt trực tuyến và bảo vệ thông tin cá nhân.</div>
+      <div class="card-outcomes">
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#f3e8ff">🧠</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#9333ea">KIẾN THỨC</span><br>Nhận biết lừa đảo, bắt nạt mạng; hiểu "dấu vết số" vĩnh viễn</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#f3e8ff">💜</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#9333ea">THÁI ĐỘ</span><br>Thận trọng khi chia sẻ thông tin; tôn trọng người khác online</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#f3e8ff">✅</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#9333ea">HÀNH VI</span><br>Không chia sẻ mật khẩu; báo người lớn khi bị đe dọa; gọi 111</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-lessons">3 bài học · UNICEF VN, Bộ TT&TT</div>
+        <button class="card-btn" style="background:#9333ea;color:#fff">Học ngay →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHỦ ĐỀ 7: TỰ CHĂM SÓC -->
+  <div class="topic-card">
+    <div class="card-banner" style="background: linear-gradient(145deg, #f0fdfa, #ccfbf1);">
+      <div class="card-orb" style="width:180px;height:180px;background:#99f6e4;top:-60px;right:-40px;"></div>
+      <div class="card-number" style="color:#134e4a">CHỦ ĐỀ 7</div>
+      <div class="card-title-wrap">
+        <div class="card-tag" style="color:#0d9488">🏠 Kỹ năng cá nhân</div>
+        <div class="card-name" style="color:#134e4a">Tự chăm sóc<br>khi ba/mẹ xa</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Nhiều trẻ em ĐBSCL sống cùng ông bà khi ba/mẹ đi làm xa. Học kỹ năng sơ cứu cơ bản, số điện thoại khẩn cấp và xử lý tình huống bất ngờ tại nhà.</div>
+      <div class="card-outcomes">
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#ccfbf1">🧠</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#0d9488">KIẾN THỨC</span><br>Biết số khẩn cấp 113/114/115/111; kỹ năng sơ cứu cơ bản</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#ccfbf1">💚</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#0d9488">THÁI ĐỘ</span><br>Tự tin, bình tĩnh khi đối mặt tình huống khẩn cấp</div>
+        </div>
+        <div class="outcome-row">
+          <div class="outcome-icon" style="background:#ccfbf1">✅</div>
+          <div class="outcome-text"><span class="outcome-label" style="color:#0d9488">HÀNH VI</span><br>Lưu số khẩn cấp; không mở cửa cho người lạ; có kế hoạch liên lạc</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-lessons">3 bài học · UNICEF VN, Luật Trẻ em</div>
+        <button class="card-btn" style="background:#0d9488;color:#fff">Học ngay →</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Source note -->
+<div class="source-note">
+  <div class="source-note-icon">📎</div>
+  <div class="source-note-text">
+    Nội dung được biên soạn dựa trên tài liệu của <strong>UNICEF Việt Nam</strong>, <strong>WHO</strong>, <strong>American Red Cross</strong>, <strong>Mayo Clinic</strong> và các cơ quan chuyên môn Việt Nam.
+    Xem danh sách nguồn đầy đủ tại <a href="tai-nguyen.html">trang Tài nguyên →</a>
+  </div>
+</div>
+
+<footer class="footer-bar">
+  <div class="footer-text">© 2026 Làm Sao? · Đồng bằng sông Cửu Long</div>
+  <div class="footer-links">
+    <a href="ve-chung-toi.html">Liên hệ</a>
+    <a href="ve-chung-toi.html">Về dự án</a>
+    <a href="choi-thu.html">Tải game</a>
+  </div>
+</footer>
+
+</body>
+</html>

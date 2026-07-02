@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Làm Sao? — Kỹ năng thích ứng khí hậu cho trẻ em ĐBSCL</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f3ff; }
+
+    /* ── THEME (sync theo hero slide) ── */
+    :root {
+      --accent: #7c3aed; /* mặc định */
+      --accent-2: #38bdf8; /* mặc định */
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 0.5px solid rgba(255,255,255,0.35);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.05);
+      padding: 0 32px;
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+    }
+
+    .logo { font-size: 20px; font-weight: 700; color: rgba(17,24,39,0.95); }
+    .logo span { color: var(--accent); }
+    .logo span { color: var(--accent); }
+    .nav { display: flex; gap: 26px; align-items: center; }
+    .nav a { font-size: 13px; color: #6b7280; text-decoration: none; cursor: pointer; }
+    .nav a:hover { color: #8b5cf6; }
+    .nav a.active { color: #8b5cf6; font-weight: 500; }
+    .nav-cta {
+      background: linear-gradient(135deg, #8b5cf6, #38bdf8);
+      color: #fff !important; padding: 7px 18px; border-radius: 20px;
+      font-size: 12px !important; font-weight: 600;
+    }
+
+    /* ── HERO ── */
+    .hero { position: relative; min-height: 100vh; overflow: hidden; padding-bottom: 64px; }
+    .slides { display: flex; transition: transform 0.5s cubic-bezier(.4,0,.2,1); width: 500%; }
+    .slide {
+      width: 20%;
+      min-height: 100vh;
+      position: relative;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 40px 48px;
+    }
+
+    /* Màu nền mỗi slide — chỉnh tại đây */
+    .slide-1 { background: linear-gradient(145deg, #e0fdf4 0%, #d1fae5 40%, #ecfdf5 100%); }
+    .slide-2 { background: linear-gradient(145deg, #fff7ed 0%, #fef3c7 40%, #fffbeb 100%); }
+    .slide-3 { background: linear-gradient(145deg, #f5f3ff 0%, #ede9fe 40%, #faf5ff 100%); }
+    .slide-4 { background: linear-gradient(145deg, #ecfeff 0%, #cffafe 40%, #f0fdfa 100%); }
+    .slide-5 { background: linear-gradient(145deg, #fff1f2 0%, #ffe4e6 40%, #fdf2f8 100%); }
+
+    .scene { position: absolute; inset: 0; pointer-events: none; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.5; }
+    .grid-overlay {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1px);
+      background-size: 28px 28px; pointer-events: none;
+    }
+
+    .slide-visual {
+      right: 8%;
+      width: 300px;
+      height: 300px;
+    }
+
+    /* Nội dung text mỗi slide */
+    .slide-content { position: relative; z-index: 2; max-width: 480px; }
+    .slide-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 1.4px; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
+    }
+    .slide-title {
+      font-size: 56px; font-weight: 700; line-height: 1.18;
+      margin-bottom: 12px; letter-spacing: -0.8px;
+    }
+    .slide-title em { font-style: normal; }
+    .slide-desc { font-size: 18px; line-height: 1.68; max-width: 500px; margin-bottom: 22px; }
+    .slide-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 16px; font-weight: 600;
+      padding: 14px 28px; border-radius: 24px; border: none; cursor: pointer;
+    }
+
+    /* Màu sắc từng slide — chỉnh tại đây */
+    .s1-tag { background: #d1fae5; color: #065f46; }
+    .s1-title { color: #064e3b; }
+    .s1-title em { color: #059669; }
+    .s1-desc { color: #374151; }
+    .s1-btn { background: #059669; color: #fff; }
+    .orb-s1a { width:280px;height:280px;background:#6ee7b7;top:-80px;right:60px; }
+    .orb-s1b { width:180px;height:180px;background:#a7f3d0;top:120px;right:260px; }
+
+    .s2-tag { background: #fef3c7; color: #92400e; }
+    .s2-title { color: #78350f; }
+    .s2-title em { color: #d97706; }
+    .s2-desc { color: #374151; }
+    .s2-btn { background: #d97706; color: #fff; }
+    .orb-s2a { width:300px;height:300px;background:#fde68a;top:-90px;right:40px; }
+    .orb-s2b { width:160px;height:160px;background:#fcd34d;top:110px;right:280px; }
+
+    .s3-tag { background: #ede9fe; color: #4c1d95; }
+    .s3-title { color: #3b0764; }
+    .s3-title em { color: #7c3aed; }
+    .s3-desc { color: #374151; }
+    .s3-btn { background: #7c3aed; color: #fff; }
+    .orb-s3a { width:260px;height:260px;background:#c4b5fd;top:-60px;right:80px; }
+    .orb-s3b { width:200px;height:200px;background:#ddd6fe;top:90px;right:250px; }
+
+    .s4-tag { background: #cffafe; color: #164e63; }
+    .s4-title { color: #083344; }
+    .s4-title em { color: #0891b2; }
+    .s4-desc { color: #374151; }
+    .s4-btn { background: #0891b2; color: #fff; }
+    .orb-s4a { width:290px;height:290px;background:#a5f3fc;top:-75px;right:55px; }
+    .orb-s4b { width:170px;height:170px;background:#67e8f9;top:105px;right:275px; }
+
+    .s5-tag { background: #ffe4e6; color: #881337; }
+    .s5-title { color: #4c0519; }
+    .s5-title em { color: #e11d48; }
+    .s5-desc { color: #374151; }
+    .s5-btn { background: #e11d48; color: #fff; }
+    .orb-s5a { width:270px;height:270px;background:#fda4af;top:-65px;right:70px; }
+    .orb-s5b { width:190px;height:190px;background:#fecdd3;top:95px;right:265px; }
+
+    /* Nút mũi tên */
+    .arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      z-index: 10; width: 40px; height: 40px; border-radius: 50%;
+      border: 0.5px solid rgba(0,0,0,0.12);
+      background: rgba(255, 255, 255, 0.103);
+      color: #374151; font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+
+
+    .arrow:hover { background: #ffffff77; }
+    .arrow-left { left: 16px; }
+    .arrow-right { right: 16px; }
+
+    
+    /* ── THANH CHỦ ĐỀ ── */
+.topics {
+      position: absolute; bottom: 0;
+      left: 0; right: 0;
+      z-index: 220;
+
+      background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      border-top: 0.5px solid rgba(255,255,255,0.30);
+      border-bottom: 0.5px solid rgba(255,255,255,0.30);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.05);
+
+      padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      overflow-x: auto;
+    }
+
+
+
+    .topic-pill {
+      
+      z-index: 180;
+      padding: 13px 18px; font-size: 12px; color: #9ca3af;
+      cursor: pointer; border-bottom: 2px solid transparent;
+      white-space: nowrap; transition: all 0.2s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .topic-pill:hover { color: #374151; }
+    .topic-pill.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .topic-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Đặt màu active theo biến theme (sync theo hero slide) */
+    .topic-pill.active .topic-dot { box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 20%, transparent); }
+
+    /* ── THẺ NỘI DUNG ── */
+    .content-section {
+      background: #f9f8ff; padding: 28px 32px 24px;
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
+    }
+    .info-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 20px; cursor: pointer;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .info-card:hover { border-color: rgba(139,92,246,0.3); box-shadow: 0 4px 16px rgba(139,92,246,0.08); }
+    .card-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 12px;
+    }
+    .card-label { font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 6px; }
+    .card-title { font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 8px; line-height: 1.35; }
+    .card-desc { font-size: 12px; color: #6b7280; line-height: 1.6; }
+
+    /* ── FOOTER ── */
+    .footer-bar {
+      background: #fff; border-top: 0.5px solid rgba(0,0,0,0.07);
+      padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-text { font-size: 11px; color: #9ca3af; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 11px; color: #9ca3af; text-decoration: none; }
+    .footer-links a:hover { color: #7c3aed; }
+  </style>
+</head>
+<body>
+
+  <!-- ════ HEADER ════ -->
+  <!-- Chỉnh tên mục điều hướng tại đây -->
+  <header class="header">
+    <div class="logo">Làm <span>Sao?</span></div>
+    <nav class="nav">
+      <a href="index.html" class="active">Trang chủ</a>
+      <a href="ve-chung-toi.html">Về chúng tôi</a>
+      <a href="kien-thuc.html">Kiến thức</a>
+      <a href="hoat-dong.html">Hoạt động</a>
+      <a href="tai-nguyen.html">Tài nguyên</a>
+      <a href="choi-thu.html" class="nav-cta">Chơi thử ↗</a>
+    </nav>
+  </header>
+
+  <!-- ════ HERO CAROUSEL ════ -->
+  <section class="hero">
+    <div class="slides" id="slides">
+
+      <!-- ── SLIDE 1: Ngập lụt ── -->
+      <!-- Để thêm slide mới: copy từ đây đến thẻ đóng slide, dán sau slide cuối -->
+      <!-- Nhớ đổi class: slide-1 → slide-6, s1-tag → s6-tag, v.v. -->
+      <div class="slide slide-1">
+        <div class="scene">
+          <div class="orb orb-s1a"></div>
+          <div class="orb orb-s1b"></div>
+          <div class="grid-overlay"></div>
+        </div>
+
+        <!-- Hình minh họa SVG — có thể thay bằng thẻ <img> nếu có ảnh thật -->
+        <!-- Ví dụ: <img src="assets/images/ngap-lut.png" class="slide-visual" alt="Ngập lụt"> -->
+        <div class="slide-visual">
+          <svg width="160" height="190" viewBox="0 0 160 190" fill="none">
+            <rect x="18" y="60" width="120" height="90" rx="5" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.35)" stroke-width="1.5"/>
+            <rect x="58" y="38" width="44" height="32" rx="3" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+            <line x1="80" y1="38" x2="80" y2="18" stroke="rgba(16,185,129,0.5)" stroke-width="1.5"/>
+            <rect x="71" y="8" width="18" height="13" rx="2" fill="rgba(16,185,129,0.25)" stroke="rgba(16,185,129,0.7)" stroke-width="1"/>
+            <rect x="28" y="78" width="22" height="32" rx="2" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="0.5"/>
+            <rect x="69" y="84" width="22" height="26" rx="2" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="0.5"/>
+            <rect x="110" y="78" width="20" height="32" rx="2" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="0.5"/>
+            <path d="M8 152 Q28 142 48 152 Q68 162 88 152 Q108 142 128 152 Q148 162 160 152 L160 190 L8 190Z" fill="rgba(52,211,153,0.3)"/>
+            <path d="M8 162 Q38 150 68 162 Q98 174 128 162 Q145 156 160 162 L160 190 L8 190Z" fill="rgba(16,185,129,0.45)"/>
+            <circle cx="50" cy="52" r="4" fill="rgba(245,158,11,1)"/>
+            <circle cx="50" cy="52" r="8" fill="rgba(245,158,11,0.2)"/>
+            <line x1="50" y1="44" x2="50" y2="28" stroke="rgba(245,158,11,0.7)" stroke-width="1.5"/>
+            <line x1="42" y1="52" x2="26" y2="52" stroke="rgba(245,158,11,0.7)" stroke-width="1.5"/>
+          </svg>
+        </div>
+
+        <!-- Chỉnh nội dung text tại đây -->
+        <div class="slide-content">
+          <div class="slide-tag s1-tag">Chủ đề 1</div>
+          <div class="slide-title s1-title">
+            Khi nước<br>
+            <em>dâng lên</em> —<br>
+            bạn làm gì?
+          </div>
+          <div class="slide-desc s1-desc">
+            Học cách ứng phó với ngập lụt trong từng gian nhà.
+            Cầu dao ở đâu? Tắt điện khi nào? Đi đường nào an toàn?
+          </div>
+          <button class="slide-btn s1-btn">▶ Vào học ngay</button>
+        </div>
+      </div>
+      <!-- ── Kết thúc SLIDE 1 ── -->
+
+      <!-- ── SLIDE 2: Nắng nóng ── -->
+      <div class="slide slide-2">
+        <div class="scene">
+          <div class="orb orb-s2a"></div>
+          <div class="orb orb-s2b"></div>
+          <div class="grid-overlay"></div>
+        </div>
+        <div class="slide-visual">
+          <svg width="160" height="190" viewBox="0 0 160 190" fill="none">
+            <circle cx="80" cy="78" r="44" fill="rgba(251,191,36,0.15)" stroke="rgba(251,191,36,0.3)" stroke-width="1"/>
+            <circle cx="80" cy="78" r="30" fill="rgba(251,191,36,0.2)" stroke="rgba(245,158,11,0.5)" stroke-width="1"/>
+            <circle cx="80" cy="78" r="17" fill="rgba(245,158,11,0.35)" stroke="rgba(217,119,6,0.8)" stroke-width="1.5"/>
+            <line x1="80" y1="24" x2="80" y2="12" stroke="rgba(245,158,11,0.8)" stroke-width="2"/>
+            <line x1="80" y1="132" x2="80" y2="144" stroke="rgba(245,158,11,0.8)" stroke-width="2"/>
+            <line x1="26" y1="78" x2="14" y2="78" stroke="rgba(245,158,11,0.8)" stroke-width="2"/>
+            <line x1="134" y1="78" x2="146" y2="78" stroke="rgba(245,158,11,0.8)" stroke-width="2"/>
+            <line x1="41" y1="39" x2="33" y2="31" stroke="rgba(245,158,11,0.6)" stroke-width="2"/>
+            <line x1="119" y1="39" x2="127" y2="31" stroke="rgba(245,158,11,0.6)" stroke-width="2"/>
+            <rect x="28" y="156" width="104" height="10" rx="5" fill="rgba(251,191,36,0.2)"/>
+            <rect x="28" y="156" width="78" height="10" rx="5" fill="rgba(245,158,11,0.55)"/>
+            <text x="138" y="164" font-size="10" fill="rgba(180,83,9,0.9)" text-anchor="end" font-weight="600">38°C</text>
+          </svg>
+        </div>
+        <div class="slide-content">
+          <div class="slide-tag s2-tag">Chủ đề 2</div>
+          <div class="slide-title s2-title">
+            Nắng <em>39°C</em> —<br>
+            cơ thể bạn<br>
+            đang kêu cứu?
+          </div>
+          <div class="slide-desc s2-desc">
+            Nhận biết dấu hiệu say nắng, sốc nhiệt.
+            Biết khi nào cần gọi cấp cứu và cách sơ cứu đúng tại chỗ.
+          </div>
+          <button class="slide-btn s2-btn">▶ Vào học ngay</button>
+        </div>
+      </div>
+
+      <!-- ── SLIDE 3: Giông lốc ── -->
+      <div class="slide slide-3">
+        <div class="scene">
+          <div class="orb orb-s3a"></div>
+          <div class="orb orb-s3b"></div>
+          <div class="grid-overlay"></div>
+        </div>
+        <div class="slide-visual">
+          <svg width="160" height="190" viewBox="0 0 160 190" fill="none">
+            <path d="M35 88 Q45 44 80 56 Q88 22 124 44 Q150 50 145 82 Q166 88 160 110 Q154 132 132 126 L35 126 Q14 122 14 104 Q14 86 35 88Z" fill="rgba(139,92,246,0.12)" stroke="rgba(139,92,246,0.3)" stroke-width="1"/>
+            <path d="M92 56 L70 100 L88 100 L64 144 L108 96 L88 96Z" fill="rgba(253,224,71,0.9)" stroke="rgba(234,179,8,0.8)" stroke-width="0.5"/>
+            <circle cx="36" cy="158" r="4" fill="rgba(139,92,246,0.5)"/>
+            <circle cx="62" cy="166" r="3" fill="rgba(139,92,246,0.4)"/>
+            <circle cx="96" cy="162" r="3.5" fill="rgba(139,92,246,0.5)"/>
+            <circle cx="126" cy="160" r="4" fill="rgba(139,92,246,0.45)"/>
+            <line x1="36" y1="158" x2="36" y2="178" stroke="rgba(139,92,246,0.35)" stroke-width="1.5"/>
+            <line x1="62" y1="166" x2="62" y2="182" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+            <line x1="96" y1="162" x2="96" y2="180" stroke="rgba(139,92,246,0.35)" stroke-width="1.5"/>
+            <line x1="126" y1="160" x2="126" y2="177" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="slide-content">
+          <div class="slide-tag s3-tag">Chủ đề 3</div>
+          <div class="slide-title s3-title">
+            Sét <em>đánh</em> —<br>
+            bạn đứng ở<br>
+            đâu là an toàn?
+          </div>
+          <div class="slide-desc s3-desc">
+            Cây lớn, mái tôn, hay nhà bê tông? Học cách phân biệt
+            nơi trú ẩn an toàn và những sai lầm nguy hiểm.
+          </div>
+          <button class="slide-btn s3-btn">▶ Vào học ngay</button>
+        </div>
+      </div>
+
+      <!-- ── SLIDE 4: Xâm nhập mặn ── -->
+      <div class="slide slide-4">
+        <div class="scene">
+          <div class="orb orb-s4a"></div>
+          <div class="orb orb-s4b"></div>
+          <div class="grid-overlay"></div>
+        </div>
+        <div class="slide-visual">
+          <svg width="160" height="190" viewBox="0 0 160 190" fill="none">
+            <path d="M14 108 Q34 88 54 108 Q74 128 94 108 Q114 88 134 108 Q148 120 154 108 L154 178 L14 178Z" fill="rgba(6,182,212,0.18)" stroke="rgba(6,182,212,0.35)" stroke-width="1"/>
+            <path d="M14 122 Q44 104 74 122 Q104 140 134 122 Q148 115 154 122 L154 178 L14 178Z" fill="rgba(6,182,212,0.3)"/>
+            <rect x="62" y="54" width="36" height="60" rx="5" fill="rgba(6,182,212,0.1)" stroke="rgba(6,182,212,0.35)" stroke-width="1.5"/>
+            <path d="M56 54 Q80 38 104 54" stroke="rgba(6,182,212,0.45)" stroke-width="1.5" fill="none"/>
+            <text x="80" y="84" font-size="12" fill="rgba(8,145,178,1)" text-anchor="middle" font-weight="700">1.5‰</text>
+            <text x="80" y="97" font-size="9" fill="rgba(14,116,144,0.7)" text-anchor="middle">độ mặn</text>
+          </svg>
+        </div>
+        <div class="slide-content">
+          <div class="slide-tag s4-tag">Chủ đề 4</div>
+          <div class="slide-title s4-title">
+            Nước <em>mặn</em><br>
+            vào — nước<br>
+            ngọt cạn dần
+          </div>
+          <div class="slide-desc s4-desc">
+            Xâm nhập mặn ảnh hưởng thế nào đến nguồn nước ăn?
+            Học cách trữ nước đúng và nhận biết nước an toàn.
+          </div>
+          <button class="slide-btn s4-btn">▶ Vào học ngay</button>
+        </div>
+      </div>
+
+      <!-- ── SLIDE 5: Ô nhiễm ── -->
+      <div class="slide slide-5">
+        <div class="scene">
+          <div class="orb orb-s5a"></div>
+          <div class="orb orb-s5b"></div>
+          <div class="grid-overlay"></div>
+        </div>
+        <div class="slide-visual">
+          <svg width="160" height="190" viewBox="0 0 160 190" fill="none">
+            <path d="M56 138 L66 82 L76 138Z" fill="rgba(244,63,94,0.18)" stroke="rgba(244,63,94,0.4)" stroke-width="1"/>
+            <path d="M76 138 L86 70 L96 138Z" fill="rgba(251,113,133,0.2)" stroke="rgba(244,63,94,0.35)" stroke-width="1"/>
+            <path d="M96 138 L104 80 L112 138Z" fill="rgba(244,63,94,0.15)" stroke="rgba(244,63,94,0.3)" stroke-width="1"/>
+            <rect x="50" y="136" width="66" height="8" rx="3" fill="rgba(107,114,128,0.25)"/>
+            <path d="M66 82 Q80 38 86 70 Q96 40 104 80" stroke="rgba(251,191,36,0.4)" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <path d="M66 82 Q80 38 86 70 Q96 40 104 80" stroke="rgba(234,179,8,0.7)" stroke-width="2" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="slide-content">
+          <div class="slide-tag s5-tag">Chủ đề 5</div>
+          <div class="slide-title s5-title">
+            Khói, rác, kênh<br>
+            <em>ô nhiễm</em> —<br>
+            bảo vệ mình sao?
+          </div>
+          <div class="slide-desc s5-desc">
+            Nhận biết nguồn ô nhiễm quanh nhà.
+            Phân loại rác đúng, bảo vệ nguồn nước kênh rạch ĐBSCL.
+          </div>
+          <button class="slide-btn s5-btn">▶ Vào học ngay</button>
+        </div>
+      </div>
+
+    </div><!-- /slides -->
+
+    <button class="arrow arrow-left" id="prev" aria-label="Trước">&#8249;</button>
+    <button class="arrow arrow-right" id="next" aria-label="Tiếp theo">&#8250;</button>
+
+    <div class="dots" id="dots">
+      <div class="dot active" data-i="0"></div>
+      <div class="dot" data-i="1"></div>
+      <div class="dot" data-i="2"></div>
+      <div class="dot" data-i="3"></div>
+      <div class="dot" data-i="4"></div>
+    </div>
+  </section>
+
+  <!-- ════ THANH CHỦ ĐỀ ════ -->
+  <!-- Chỉnh tên chủ đề tại đây, màu dot là màu hex -->
+  <div class="topics" id="topicBar">
+    <div class="topic-pill active" data-i="0">
+      <div class="topic-dot" style="background:#059669"></div>Ngập lụt
+    </div>
+    <div class="topic-pill" data-i="1">
+      <div class="topic-dot" style="background:#d97706"></div>Nắng nóng
+    </div>
+    <div class="topic-pill" data-i="2">
+      <div class="topic-dot" style="background:#7c3aed"></div>Giông lốc & sét
+    </div>
+    <div class="topic-pill" data-i="3">
+      <div class="topic-dot" style="background:#0891b2"></div>Xâm nhập mặn
+    </div>
+    <div class="topic-pill" data-i="4">
+      <div class="topic-dot" style="background:#e11d48"></div>Ô nhiễm
+    </div>
+    <div class="topic-pill" data-i="5">
+      <div class="topic-dot" style="background:#7c3aed"></div>An toàn mạng
+    </div>
+    <div class="topic-pill" data-i="6">
+      <div class="topic-dot" style="background:#0ea5e9"></div>Tự chăm sóc
+    </div>
+  </div>
+
+  <!-- ════ THẺ NỘI DUNG ════ -->
+  <!-- Chỉnh tiêu đề, mô tả, màu sắc từng thẻ tại đây -->
+  <section class="content-section">
+
+    <div class="info-card">
+      <div class="card-icon" style="background:#d1fae5; font-size:20px">📚</div>
+      <div class="card-label" style="color:#059669">Kiến thức</div>
+      <div class="card-title">Thư viện bài học</div>
+      <div class="card-desc">
+        21 bài học tương tác được thiết kế riêng cho học sinh ĐBSCL từ 9–15 tuổi.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-icon" style="background:#ede9fe; font-size:20px">🎮</div>
+      <div class="card-label" style="color:#7c3aed">Game</div>
+      <div class="card-title">Chơi & học</div>
+      <div class="card-desc">
+        Mô phỏng tình huống thực tế. Quyết định — xem hậu quả — hiểu lý do khoa học.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-icon" style="background:#cffafe; font-size:20px">🏫</div>
+      <div class="card-label" style="color:#0891b2">Giáo viên</div>
+      <div class="card-title">Tài nguyên lớp học</div>
+      <div class="card-desc">
+        Tài liệu, kế hoạch bài dạy và hướng dẫn tích hợp game vào tiết học kỹ năng sống.
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════ FOOTER ════ -->
+  <footer class="footer-bar">
+    <div class="footer-text">© 2026 Làm Sao? · Đồng bằng sông Cửu Long</div>
+    <div class="footer-links">
+      <a href="#">Liên hệ</a>
+      <a href="#">Về dự án</a>
+      <a href="#">Tải game</a>
+    </div>
+  </footer>
+
+  <!-- ════ JAVASCRIPT ════ -->
+  <script>
+    // ── Biến số cần chỉnh khi thêm slide ──
+    // Nếu thêm slide 6: đổi "totalSlides = 5" thành "totalSlides = 6"
+    const totalSlides = 5;
+
+    let current = 0;
+    const slidesEl = document.getElementById('slides');
+    const dots = document.querySelectorAll('.dot');
+    const pills = document.querySelectorAll('.topic-pill');
+
+    function goTo(n) {
+      current = (n + totalSlides) % totalSlides;
+      slidesEl.style.transform = `translateX(-${current * (100 / totalSlides)}%)`;
+
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      pills.forEach((p, i) => p.classList.toggle('active', i === current));
+
+      // Sync màu theo topic-pill active để đồng bộ cả: topic-dot + dots trong hero
+      const activePill = document.querySelector(`.topic-pill[data-i="${current}"]`);
+      const activeDot = activePill ? activePill.querySelector('.topic-dot') : null;
+      const dotBg = activeDot?.style?.background || '';
+
+      const match = dotBg.match(/#([0-9a-fA-F]{3,6})/);
+      if (match) {
+        const accent = `#${match[1]}`;
+        document.documentElement.style.setProperty('--accent', accent);
+        document.documentElement.style.setProperty('--accent-2', '#38bdf8');
+
+        // Đổi màu dot điều hướng trong hero theo accent
+        dots.forEach((d, i) => {
+          if (i === current) {
+            d.style.background = accent;
+          } else {
+            d.style.background = 'rgba(0,0,0,0.18)';
+          }
+        });
+      }
+    }
+
+
+    document.getElementById('prev').onclick = () => goTo(current - 1);
+    document.getElementById('next').onclick = () => goTo(current + 1);
+    dots.forEach(d => d.onclick = () => goTo(+d.dataset.i));
+    pills.forEach((p, i) => p.onclick = () => goTo(i));
+
+    // Tự động chuyển slide mỗi 4 giây
+    let timer = setInterval(() => goTo(current + 1), 4000);
+    const heroEl = document.querySelector('.hero');
+    heroEl.addEventListener('mouseenter', () => clearInterval(timer));
+    heroEl.addEventListener('mouseleave', () => {
+      timer = setInterval(() => goTo(current + 1), 4000);
+    });
+  </script>
+
+</body>
+</html>
